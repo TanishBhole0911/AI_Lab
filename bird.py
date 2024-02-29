@@ -1,10 +1,9 @@
-
 import pygame
 import random
 import os
 import time
 import neat
-pygame.font.init()  # init font
+pygame.font.init()
 
 WIN_WIDTH = 600
 WIN_HEIGHT = 800
@@ -24,9 +23,6 @@ base_img = pygame.transform.scale2x(pygame.image.load(os.path.join("imgs","base.
 gen = 0
 
 class Bird:
-    """
-    Bird class representing the flappy bird
-    """
     MAX_ROTATION = 25
     IMGS = bird_images
     ROT_VEL = 20
@@ -34,10 +30,8 @@ class Bird:
 
     def __init__(self, x, y):
         """
-        Initialize the object
         :param x: starting x pos (int)
         :param y: starting y pos (int)
-        :return: None
         """
         self.x = x
         self.y = y
@@ -65,7 +59,7 @@ class Bird:
         self.tick_count += 1
 
         # for downward acceleration
-        displacement = self.vel*(self.tick_count) + 0.5*(3)*(self.tick_count)**2  # calculate displacement
+        displacement = self.vel*(self.tick_count) + 0.5*(3)*(self.tick_count)**2
 
         # terminal velocity
         if displacement >= 16:
@@ -116,7 +110,7 @@ class Bird:
     def get_mask(self):
         """
         gets the mask for the current image of the bird
-        :return: None
+        :return: mask of bird
         """
         return pygame.mask.from_surface(self.img)
 
@@ -339,8 +333,8 @@ def eval_genomes(genomes, config):
 
         pipe_ind = 0
         if len(birds) > 0:
-            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():  # determine whether to use the first or second
-                pipe_ind = 1                                                                 # pipe on the screen for neural network input
+            if len(pipes) > 1 and birds[0].x > pipes[0].x + pipes[0].PIPE_TOP.get_width():  
+                pipe_ind = 1           # pipe on the screen for neural network input
 
         for x, bird in enumerate(birds):  # give each bird a fitness of 0.1 for each frame it stays alive
             ge[x].fitness += 0.1
@@ -375,7 +369,7 @@ def eval_genomes(genomes, config):
 
         if add_pipe:
             score += 1
-            # can add this line to give more reward for passing through a pipe (not required)
+            # can add this line to give more reward for passing through a pipe
             for genome in ge:
                 genome.fitness += 5
             pipes.append(Pipe(WIN_WIDTH))
